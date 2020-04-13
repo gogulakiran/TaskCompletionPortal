@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db import models
 from django.urls import reverse
+
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -15,6 +18,6 @@ class Event(models.Model):
 class Task(models.Model):
     eid=models.IntegerField()
     task_name=models.CharField(max_length=200)
-    date=models.DateField()
+    date=models.DateField(default=datetime.now().strftime("%d-%m-%Y"))
     status=models.CharField(max_length=100)
     duration=models.IntegerField()

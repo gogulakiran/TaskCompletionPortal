@@ -1,14 +1,126 @@
-{% extends 'cal/base.html' %}
+{% load staticfiles %}
+<html>
+<head>
+	<title>Tasks </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="{% static 'cal/css_js/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'cal/css/styles.css' %}">
+	<link rel="stylesheet" href="{% static 'cal/css_js/font-awesome.css' %}">
+	<script src="{% static 'cal/css_js/jquery.slim.min.js' %}"></script>
+	<script src="{% static 'cal/css_js/popper.min.js' %}"></script>
+	<script src="{% static 'cal/css_js/bootstrap.min.js' %}"></script>
+</head>
+<body>
 
-{% block title %}
-Calendar
-{% endblock %}
+	<div class="container">
 
-{% block content %}
-<div class="clearfix">
-	<a class="btn btn-info left" href="{% url 'cal:calendar' %}?{{ prev_month }}"> Previous Month </a>
-	<a class="btn btn-info right" href="{% url 'cal:calendar' %}?{{ next_month }}"> Next Month </a>
-</div>
+		<div class="row">
+			<div class="col-12">
+				<h1 class="title">Calendar</h1>
+			</div>
+		</div>
 
-{{ calendar }}
-{% endblock %}
+		<div class="row">
+			<div class="col-md-7">
+				<div class="clearfix">
+					<a class="btn btn-info left" href="{% url 'cal:calendar' %}?{{ prev_month }}"> Previous Month </a>
+					<a class="btn btn-info right" href="{% url 'cal:calendar' %}?{{ next_month }}"> Next Month </a>
+				</div>
+				{{ calendar }}
+			</div>
+<!--			<div class="col-md-1"></div>-->
+			<div class="col-md-5 tasks">
+				<br><br>
+				<div class="row">
+					<div class="col-md-7 col-sm-9 date">
+						{{ date }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 accordion">
+						{% for i in t %}
+							<div class="card">
+								<div class="card-header" role="tab">
+									<h3 class="mb-0">
+										<a class="collapsed" data-toggle="collapse" data-target="#colapse{{forloop.counter}}">
+											<font color="red"> Task {{forloop.counter}} </font>  {{ i.task_name }}
+										</a>
+									</h3>
+								</div>
+								<div class="collapse" id="colapse{{forloop.counter}}" data-parent="#accordion">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-md-6">
+												<!-- <table class="tasks-table" cellpadding="8" cellspacing="3">
+													<tr class="row">
+														<td class="col"><b>Status</b></td>
+														<td> {{ i.status }}</td>
+													</tr>
+													<tr>
+														<td><b>Duration </b> </td>
+														<td> {{ i.duration }}</td>
+													</tr>
+												</table> -->
+												<dl class="row">
+													<dt class="col-6">Status</dt>
+													<dd class="col-6">{{ i.status }}</dd>
+													<dt class="col-6">Duration </dt>
+													<dd class="col-6">{{ i.duration }}</dd>
+												</dl>
+											</div>
+											<div class="col-md-6">
+												<div class="row ">
+													<div class="col-sm-12">
+														<a class="collapsed" data-toggle="collapse" data-target="#edit{{forloop.counter}}">
+															<font color="blue">
+																<u><span class="fa fa-pencil"></span> edit</u>
+															</font>
+														</a>
+													</div>
+												</div>
+<!--												<br>-->
+												<div class="collapse" id="edit{{forloop.counter}}" data-parent="#accordion">
+													<form method="POST" action="{{i.id}}">
+														{% csrf_token %}
+														<div class="form-group row">
+															<label for="status" class="col-md-5 col-form-label">Status {{hiii}} </label>
+															<div class="col-md-7">
+																<select class="form-control" id="status" name="status">
+																	<option>Completed</option>
+																	<option>Partially Completed</option>
+																	<option>Started</option>
+																	<option>Not Started</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group row">
+															<label for="duration" class="col-md-5 col-form-label">Duration</label>
+															<div class="col-md-7">
+																<input type="number" class="form-control" id="duration" name="duration" placeholder="Duration" value="{{ i.duration }}">
+															</div>
+														</div>
+														<div class="form-group row">
+															<div class="offset-md-2 col-md-10">
+																<button type="submit" class="btn btn-primary">Submit</button>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						<br>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>
